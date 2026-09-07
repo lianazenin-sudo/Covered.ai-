@@ -6,6 +6,9 @@
     <title>Join Covered.ai</title>
     <link rel="icon" type="image/png" href="Group 8.png" />
 
+    <!-- Preload the LCP image so the browser fetches it immediately, in parallel with everything else -->
+    <link rel="preload" as="image" href="Group 442.png" fetchpriority="high" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -13,10 +16,11 @@
       rel="stylesheet"
     />
 
-    <!-- Paddle.js -->
-    <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
-    <!-- Supabase JS client -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Paddle.js / Supabase: deferred so they no longer block HTML parsing.
+         They still run in order, before DOMContentLoaded, and before the inline
+         script at the bottom of <body> executes. -->
+    <script src="https://cdn.paddle.com/paddle/v2/paddle.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 
     <style>
       * {
@@ -227,6 +231,8 @@
         justify-content: center;
         align-items: center;
         margin-top: 10px;
+        /* reserve space to avoid layout shift while the image loads */
+        aspect-ratio: 700 / 500;
       }
 
       .mockup-img {
@@ -307,12 +313,10 @@
     </style>
   </head>
   <body>
-    <img class="bg-image" src="Group 442.png" alt="Background Header Graphic" />
-
-  
+    <img class="bg-image" src="Group 442.png" alt="Background Header Graphic" fetchpriority="high" />
 
     <div class="hero-container">
-      <img class="logo-img" src="Group 8.png" alt="Logo" />
+      <img class="logo-img" src="Group 8.png" alt="Logo" width="64" height="64" />
 
       <div class="badge">Save $25 · Limited Early Access Offer</div>
 
@@ -343,6 +347,8 @@
           class="mockup-img"
           src="ChatGPT Image Sep 7, 2026, 08_36_48 AM.png"
           alt="App Mockup"
+          loading="lazy"
+          decoding="async"
         />
       </div>
     </div>
