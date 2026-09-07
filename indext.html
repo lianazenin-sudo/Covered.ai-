@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Landing Page</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Paddle.js -->
+    <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+    <!-- Supabase JS client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        min-height: 100vh;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow-x: hidden;
+        position: relative;
+        background-color: #a78bfa;
+      }
+
+      .bg-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+      }
+
+      .sparkle {
+        position: absolute;
+        color: #ffffff;
+        opacity: 0.8;
+        pointer-events: none;
+      }
+      .sparkle-1 {
+        top: 15%;
+        left: 43%;
+        font-size: 14px;
+      }
+      .sparkle-2 {
+        top: 48%;
+        left: 8%;
+        font-size: 10px;
+      }
+      .sparkle-3 {
+        top: 62%;
+        left: 12%;
+        font-size: 24px;
+      }
+      .sparkle-4 {
+        top: 51%;
+        right: 10%;
+        font-size: 12px;
+      }
+
+      .hero-container {
+        width: 100%;
+        max-width: 1200px;
+        padding: 40px 20px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .logo-img {
+        width: 64px;
+        height: 64px;
+        object-fit: contain;
+        margin-bottom: 24px;
+      }
+
+      .badge {
+        background-color: #000000;
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 500;
+        padding: 8px 18px;
+        border-radius: 20px;
+        margin-bottom: 24px;
+        letter-spacing: 0.2px;
+      }
+
+      .headline {
+        color: #ffffff;
+        font-size: 48px;
+        font-weight: 700;
+        line-height: 1.25;
+        max-width: 800px;
+        margin-bottom: 36px;
+        letter-spacing: -0.5px;
+      }
+
+      .cta-container {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 40px;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+        max-width: 800px;
+      }
+
+      .email-card {
+        background: #ffffff;
+        padding: 6px 6px 6px 20px;
+        border-radius: 40px;
+        display: flex;
+        align-items: center;
+        width: 420px;
+        max-width: 100%;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+      }
+
+      .email-card input {
+        border: none;
+        outline: none;
+        font-size: 15px;
+        width: 100%;
+        color: #333;
+        background: transparent;
+        font-family: "Poppins", sans-serif;
+      }
+
+      .email-card input::placeholder {
+        color: #a1a1aa;
+      }
+
+      .btn-waitlist {
+        background-color: #000000;
+        color: #ffffff;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 30px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+        font-family: "Poppins", sans-serif;
+        transition: opacity 0.2s ease;
+      }
+
+      .btn-waitlist:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+      }
+      .btn-waitlist:active {
+        transform: translateY(0) scale(0.97);
+      }
+      .btn-waitlist:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .btn-early-adopter:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      }
+      .btn-early-adopter:active {
+        transform: translateY(0) scale(0.98);
+      }
+      .btn-early-adopter:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .btn-waitlist,
+      .btn-early-adopter {
+        transition:
+          transform 0.18s ease,
+          box-shadow 0.18s ease,
+          opacity 0.18s ease;
+      }
+
+      /* Spinner */
+      .spinner {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border: 2px solid rgba(255, 255, 255, 0.35);
+        border-top-color: #ffffff;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        vertical-align: middle;
+        margin-right: 6px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .icon-circle {
+        transition: transform 0.18s ease;
+      }
+
+      .btn-early-adopter:hover .icon-circle {
+        transform: rotate(45deg);
+      }
+
+      .btn-early-adopter {
+        background-color: #000000;
+        color: #ffffff;
+        border: none;
+        padding: 6px 6px 6px 24px;
+        border-radius: 40px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        font-family: "Poppins", sans-serif;
+        transition: opacity 0.2s ease;
+      }
+
+      .icon-circle {
+        background: #ffffff;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .icon-circle svg {
+        width: 16px;
+        height: 16px;
+        stroke: #000000;
+        stroke-width: 2.5;
+      }
+
+      .mockups-wrapper {
+        width: 100%;
+        max-width: 700px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+      }
+
+      .mockup-img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        filter: drop-shadow(0px 20px 30px rgba(0, 0, 0, 0.15));
+      }
+
+      /* Status message under forms */
+      .status-msg {
+        font-size: 13px;
+        color: #fff;
+        margin-top: -24px;
+        margin-bottom: 24px;
+        min-height: 18px;
+      }
+      .status-msg.error {
+        color: #ffb4b4;
+      }
+
+      /* Redemption code modal */
+      .code-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+      }
+      .code-overlay.show {
+        display: flex;
+      }
+      .code-modal {
+        background: #fff;
+        border-radius: 20px;
+        padding: 32px;
+        max-width: 380px;
+        width: 90%;
+        text-align: center;
+      }
+      .code-modal h2 {
+        font-size: 20px;
+        margin-bottom: 8px;
+      }
+      .code-modal p {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 20px;
+      }
+      .code-value {
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        background: #f4f4f5;
+        border-radius: 12px;
+        padding: 14px;
+        margin-bottom: 20px;
+        user-select: all;
+      }
+      .code-modal button {
+        background: #000;
+        color: #fff;
+        border: none;
+        padding: 10px 24px;
+        border-radius: 30px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: "Poppins", sans-serif;
+      }
+
+      @media (max-width: 768px) {
+        .headline {
+          font-size: 34px;
+          margin-bottom: 28px;
+        }
+        .cta-container {
+          flex-direction: column;
+          gap: 16px;
+        }
+        .email-card,
+        .btn-early-adopter {
+          width: 100%;
+          max-width: 420px;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .hero-container {
+          padding-top: 24px;
+        }
+        .headline {
+          font-size: 26px;
+          line-height: 1.3;
+        }
+        .email-card {
+          flex-direction: column;
+          padding: 12px;
+          border-radius: 20px;
+          gap: 10px;
+        }
+        .email-card input {
+          text-align: center;
+          padding: 8px 0;
+          font-size: 14px;
+        }
+        .btn-waitlist {
+          width: 100%;
+          padding: 12px;
+          border-radius: 14px;
+        }
+        .btn-early-adopter {
+          width: 100%;
+          border-radius: 20px;
+          padding: 8px 8px 8px 20px;
+          font-size: 14px;
+        }
+        .icon-circle {
+          width: 34px;
+          height: 34px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <img class="bg-image" src="Group 442.png" alt="Background Header Graphic" />
+
+    <div class="sparkle sparkle-1">✦</div>
+    <div class="sparkle sparkle-2">✦</div>
+    <div class="sparkle sparkle-3">✦</div>
+    <div class="sparkle sparkle-4">✦</div>
+
+    <div class="hero-container">
+      <img class="logo-img" src="Group 8.png" alt="Logo" />
+
+      <div class="badge">Save $25 · Limited Early Access Offer</div>
+
+      <h1 class="headline">
+        Don't just count calories. Know what your diet is missing.
+      </h1>
+
+      <div class="cta-container">
+        <div class="email-card">
+          <input
+            id="waitlist-email"
+            type="email"
+            placeholder="Enter your Email"
+          />
+          <button id="waitlist-btn" class="btn-waitlist">Join waitlist</button>
+        </div>
+
+        <button id="early-adopter-btn" class="btn-early-adopter">
+          <span>Become Early Adopter · $5</span>
+          <div class="icon-circle">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path
+                d="M7 17L17 7M17 7H7M17 7V17"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+        </button>
+      </div>
+
+      <p id="status-msg" class="status-msg"></p>
+
+      <div class="mockups-wrapper">
+        <img
+          class="mockup-img"
+          src="ChatGPT Image Sep 7, 2026, 08_36_48 AM.png"
+          alt="App Mockup"
+        />
+      </div>
+    </div>
+
+    <!-- Waitlist success modal -->
+    <div id="waitlist-overlay" class="code-overlay">
+      <div class="code-modal">
+        <h2>You're in! 🎉</h2>
+        <p id="waitlist-modal-text">
+          You've successfully joined Covered.ai's waitlist and will be informed
+          first.
+        </p>
+        <button id="waitlist-close-btn">Got it</button>
+      </div>
+    </div>
+
+    <!-- Redemption code modal -->
+    <div id="code-overlay" class="code-overlay">
+      <div class="code-modal">
+        <h2>You're in! 🎉</h2>
+        <p>
+          Here's your early adopter code. Save it — it won't be shown again.
+        </p>
+        <div id="code-value" class="code-value">XXXX-XXXX</div>
+        <button id="code-close-btn">Got it</button>
+      </div>
+    </div>
+
+    <script>
+      // ============================================================
+      // 1. FILL IN YOUR CREDENTIALS
+      // ============================================================
+      const SUPABASE_URL = "https://hryimiogqpcefiarturj.supabase.co";
+      const SUPABASE_ANON_KEY =
+        "sb_publishable_tctMUcFHZNA5WtIoiPoM3A_C25Pqxf4";
+      const PADDLE_CLIENT_TOKEN = "test_cbba4c718022996971e1888f66d";
+      const PADDLE_PRICE_ID = "pri_01m1xtk3aqb07rf4vj24c7ywqv"; // the $5 price
+      const PADDLE_ENV = "sandbox"; // change to "production" when you go live
+      // ============================================================
+
+      const supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY,
+      );
+
+      Paddle.Environment.set(PADDLE_ENV);
+      Paddle.Initialize({
+        token: PADDLE_CLIENT_TOKEN,
+        eventCallback: function (event) {
+          if (event.name === "checkout.completed") {
+            const email = event.data?.customer?.email || "";
+            handlePaymentSuccess(email);
+          }
+        },
+      });
+
+      const statusMsg = document.getElementById("status-msg");
+      function showStatus(text, isError) {
+        statusMsg.textContent = text;
+        statusMsg.className = "status-msg" + (isError ? " error" : "");
+      }
+
+      // ---------- Waitlist ----------
+      const waitlistBtn = document.getElementById("waitlist-btn");
+      const waitlistInput = document.getElementById("waitlist-email");
+
+      waitlistBtn.addEventListener("click", async () => {
+        const email = waitlistInput.value.trim().toLowerCase();
+        if (!email || !email.includes("@")) {
+          showStatus("Please enter a valid email.", true);
+          return;
+        }
+
+        waitlistBtn.disabled = true;
+        const originalLabel = waitlistBtn.innerHTML;
+        waitlistBtn.innerHTML = '<span class="spinner"></span>Joining...';
+
+        const { error } = await supabaseClient
+          .from("waitlist")
+          .insert({ email });
+
+        waitlistBtn.disabled = false;
+        waitlistBtn.innerHTML = originalLabel;
+
+        if (error) {
+          if (error.code === "23505") {
+            document.getElementById("waitlist-modal-text").textContent =
+              "You're already on the waitlist — we'll be in touch soon!";
+            document.getElementById("waitlist-overlay").classList.add("show");
+          } else {
+            showStatus("Something went wrong. Try again.", true);
+            console.error(error);
+          }
+          return;
+        }
+
+        waitlistInput.value = "";
+        document.getElementById("waitlist-modal-text").textContent =
+          "You've successfully joined Covered.ai's waitlist and will be informed first.";
+        document.getElementById("waitlist-overlay").classList.add("show");
+      });
+
+      document
+        .getElementById("waitlist-close-btn")
+        .addEventListener("click", () => {
+          document.getElementById("waitlist-overlay").classList.remove("show");
+        });
+
+      // ---------- Early Adopter checkout ----------
+      const earlyAdopterBtn = document.getElementById("early-adopter-btn");
+
+      earlyAdopterBtn.addEventListener("click", () => {
+        Paddle.Checkout.open({
+          items: [{ priceId: PADDLE_PRICE_ID, quantity: 1 }],
+        });
+      });
+
+      // ---------- On successful payment: generate + save + show code ----------
+      function generateCode() {
+        const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no ambiguous chars
+        let code = "";
+        for (let i = 0; i < 8; i++) {
+          if (i === 4) code += "-";
+          code += chars[Math.floor(Math.random() * chars.length)];
+        }
+        return code;
+      }
+
+      async function handlePaymentSuccess(email) {
+        const code = generateCode();
+
+        const { error } = await supabaseClient
+          .from("redemption_codes")
+          .insert({ email, code });
+
+        if (error) {
+          console.error("Failed to save code:", error);
+        }
+
+        document.getElementById("code-value").textContent = code;
+        document.getElementById("code-overlay").classList.add("show");
+      }
+
+      document
+        .getElementById("code-close-btn")
+        .addEventListener("click", () => {
+          document.getElementById("code-overlay").classList.remove("show");
+        });
+    </script>
+  </body>
+</html>
