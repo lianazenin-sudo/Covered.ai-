@@ -30,15 +30,33 @@
         font-family: "Poppins", sans-serif;
       }
 
+      html, body {
+        height: 100%;
+        overflow: hidden;
+      }
+
       body {
-        min-height: 100vh;
+        height: 100vh;
         color: #333;
         display: flex;
         flex-direction: column;
         align-items: center;
-        overflow-x: hidden;
+        justify-content: center;
         position: relative;
         background-color: #a78bfa;
+      }
+
+      /* On very short viewports, don't let content clip off-screen —
+         fall back to a scrollable page instead */
+      @media (max-height: 600px) {
+        html, body {
+          height: auto;
+          min-height: 100%;
+          overflow-y: auto;
+        }
+        body {
+          justify-content: flex-start;
+        }
       }
 
       .bg-image {
@@ -65,11 +83,15 @@
       .hero-container {
         width: 100%;
         max-width: 1200px;
-        padding: 40px 20px 0;
+        height: 100%;
+        max-height: 100vh;
+        padding: 24px 20px 12px;
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: center;
         text-align: center;
+        overflow: hidden;
       }
 
       .logo-img {
@@ -233,11 +255,15 @@
         margin-top: 10px;
         /* reserve space to avoid layout shift while the image loads */
         aspect-ratio: 700 / 500;
+        flex: 1 1 auto;
+        min-height: 0;
       }
 
       .mockup-img {
-        width: 100%;
-        height: auto;
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: 100%;
         object-fit: contain;
         filter: drop-shadow(0px 20px 30px rgba(0, 0, 0, 0.15));
       }
@@ -381,8 +407,8 @@
       // ============================================================
       const SUPABASE_URL = "https://hryimiogqpcefiarturj.supabase.co";
       const SUPABASE_ANON_KEY = "sb_publishable_tctMUcFHZNA5WtIoiPoM3A_C25Pqxf4";
-      const PADDLE_CLIENT_TOKEN = "live_a83d9ecf64e4cf0af07165cb967";
-      const PADDLE_PRICE_ID = "pri_01m1rdw4b2gpgjkcszrww65mjb"; // the $5 price
+      const PADDLE_CLIENT_TOKEN = "0000";
+      const PADDLE_PRICE_ID = "0000"; // the $5 price
       const PADDLE_ENV = "production"; // change to "production" when you go live
       // ============================================================
 
