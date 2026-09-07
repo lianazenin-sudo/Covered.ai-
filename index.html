@@ -31,32 +31,18 @@
       }
 
       html, body {
-        height: 100%;
         overflow: hidden;
       }
 
       body {
-        height: 100vh;
+        min-height: 100vh;
         color: #333;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        overflow-x: hidden;
         position: relative;
         background-color: #a78bfa;
-      }
-
-      /* On very short viewports, don't let content clip off-screen —
-         fall back to a scrollable page instead */
-      @media (max-height: 600px) {
-        html, body {
-          height: auto;
-          min-height: 100%;
-          overflow-y: auto;
-        }
-        body {
-          justify-content: flex-start;
-        }
       }
 
       .bg-image {
@@ -83,15 +69,11 @@
       .hero-container {
         width: 100%;
         max-width: 1200px;
-        height: 100%;
-        max-height: 100vh;
-        padding: 24px 20px 12px;
+        padding: 40px 20px 0;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
         text-align: center;
-        overflow: hidden;
       }
 
       .logo-img {
@@ -253,17 +235,11 @@
         justify-content: center;
         align-items: center;
         margin-top: 10px;
-        /* reserve space to avoid layout shift while the image loads */
-        aspect-ratio: 700 / 500;
-        flex: 1 1 auto;
-        min-height: 0;
       }
 
       .mockup-img {
-        max-width: 100%;
-        max-height: 100%;
-        width: auto;
-        height: 100%;
+        width: 100%;
+        height: auto;
         object-fit: contain;
         filter: drop-shadow(0px 20px 30px rgba(0, 0, 0, 0.15));
       }
